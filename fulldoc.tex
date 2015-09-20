@@ -1,0 +1,37 @@
+\usepackage{amssymb}
+\renewcommand\familydefault{\sfdefault}
+
+\setlength{\parindent}{0mm}
+
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{geometry}
+\geometry{margin=0mm,total={215.9mm,279.4mm}}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{tabularx}{\textwidth}{|X|X|}
+\include{page1} & \include{page1} \\
+\hline
+\include{page1} & \include{page1} \\
+\hline
+\include{page1} & \include{page1} \\
+\end{tabularx}
+
+% \lipsum
+
+\newpage
+
+\begin{tabularx}{\textwidth}{|X|X|}
+\include{page2} & \include{page2} \\
+\hline
+\include{page2} & \include{page2} \\
+\hline
+\include{page2} & \include{page2} \\
+\end{tabularx}
+
+% \lipsum
+
+
