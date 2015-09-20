@@ -1,4 +1,4 @@
-import tempfile, BaseHTTPServer, cgi, os, shutil
+import tempfile, BaseHTTPServer, cgi, os, shutil, SocketServer
 
 doctemplate = r'''\documentclass[letterpaper,12pt]{article}
 
@@ -69,9 +69,12 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                                     keep_blank_values=1)
         else:
             postvars = {}
+        # normalize keys, escape values for latex
         postvars = dict((n.lower(), 
                          self.escape_latex_string(' '.join(v)))
                         for n, v in postvars.items())
+        # Make sure every value is non-trivial
+        postvars = dict((n, v or n) for n, v in postvars.items())
         postvars['pdate'] = primary_dates.get(postvars['state'], 'Jan 1')
         caucusp = postvars['state'] in caucus_states 
         postvars['action'] = 'Caucus' if caucusp else 'Vote'
@@ -93,5 +96,9 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         finally:
             os.system(rmcommand)
 
+class ThreadedHTTPServer(SocketServer.ThreadingMixIn, 
+                         BaseHTTPServer.HTTPServer):
+    """Handle requests in a separate thread."""
+
 if __name__ == '__main__':
-    BaseHTTPServer.test(RequestHandler, BaseHTTPServer.HTTPServer)
+    BaseHTTPServer.test(RequestHandler, ThreadedHTTPServer)
