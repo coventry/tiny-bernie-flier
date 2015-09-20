@@ -1,4 +1,21 @@
-import tempfile, BaseHTTPServer, cgi, os, shutil, SocketServer
+import tempfile, BaseHTTPServer, cgi, os, shutil, SocketServer, time
+import Queue, threading
+
+logname = '~/bernie-%s.log' % time.ctime().replace(' ', '-')
+logname = os.path.expanduser(logname)
+logfile = open(logname, 'w')
+logqueue = Queue.Queue()
+def logwork():
+    while True:
+        logitem = logqueue.get()
+        print >> logfile, logitem
+        logfile.flush()
+        logqueue.task_done()
+# Commit a single thread to logging, so log entries don't overwrite.
+logthread = threading.Thread(target=logwork)
+logthread.start()
+def log(s):
+    logqueue.put('%s %s' % (time.ctime(), str(s)))
 
 doctemplate = r'''\documentclass[letterpaper,12pt]{article}
 
@@ -78,7 +95,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         postvars['pdate'] = primary_dates.get(postvars['state'], 'Jan 1')
         caucusp = postvars['state'] in caucus_states 
         postvars['action'] = 'Caucus' if caucusp else 'Vote'
-        print postvars
+        log((self.client_address[0], postvars))
         doc = doctemplate % tuple(postvars.get(n, n) for n in docvars)
         f = tempfile.NamedTemporaryFile(suffix='.tex', dir='.')
         f.write(doc)
