@@ -1,0 +1,19 @@
+February 1	Iowa caucus
+February 9	New Hampshire
+February 20	Nevada caucus 
+February 27	South Carolina 
+March  1	Alabama, Arkansas, Colorado caucus, Georgia, Massachusetts , Minnesota caucus, North Carolina, Oklahoma, Tennessee, Texas, Vermont, Virginia
+March  5	Kansas caucus, Louisiana, Nebraska caucus, Mississippi, Michigan
+March  6	Maine caucus
+March 15	Ohio, Florida, Illinois, Missouri
+March 22	Arizona, Utah, Idaho caucus
+March 26	Alaska caucus , Hawaii caucus, Washington caucus
+April  5	Wisconsin
+April  9	Wyoming caucus
+April 19	New York
+April 26	Connecticut, Delaware, Maryland, Pennsylvania, Rhode Island
+May   3 	Indiana, West Virginia
+May   17	Kentucky, Oregon
+June   5	Puerto Rico
+June   7	California, Montana, New Jersey, New Mexico, South Dakota, North Dakota caucus
+June 14 	Washington DC
