@@ -56,6 +56,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.wfile.write(form)
+        log((self.client_address[0],))
         
     latex_escapes = {
         '&':  r'\&',
