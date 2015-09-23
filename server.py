@@ -36,7 +36,7 @@ doctemplate = r'''\documentclass[letterpaper,12pt]{article}
 docvars = ('meetingtime meetingaddress meetingplacename groupname '
            'groupurl state pdate action contactinfo').split()
 
-form = open('form.html').read()
+template_form = open('form.html').read()
 
 primary_dates = {}
 caucus_states = set()
@@ -52,10 +52,28 @@ for line in open('primaries.txt'):
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
+    def edit_form(self, name, url, contact, mtime, mplace, maddr):
+        mform = template_form.replace('Clark County for Bernie Sanders', name)
+        mform = mform.replace('www.facebook.com/ClarkCountyforBernie', url)
+        mform = mform.replace('so.grassroots@gmail.com, ph. no. 314 448 0709', contact)
+        mform = mform.replace('Every Tuesday 6 p.m.', mtime)
+        mform = mform.replace('Greene County Democratic Party Headquarters', mplace)
+        mform = mform.replace('10 S Detroit St Xenia', maddr)
+        return mform
+
     def do_GET(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
+        if self.path == '/mcdp':
+            form = self.edit_form(
+                'Dayton for Bernie Sanders',
+                'http://bit.do/d4bernie',
+                'so.grassroots@gmail.com, ph. no. 314 448 0709',
+                'Every Wed 6:30 p.m.',
+                'MCDP', '131 S Wilkinson St')
+        else:
+            form = template_form
         self.wfile.write(form)
         log((self.client_address[0],))
         
